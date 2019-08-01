@@ -1,0 +1,48 @@
+version: "3" 
+services: 
+  backend: 
+    command: "npm start"
+    depends_on: 
+      - mongo
+    image: "node:latest"
+    links: 
+      - mongo
+    ports: 
+      - "5000:3000"
+    tty: true
+    volumes: 
+      - "C:\\Users\\vallurna\\Desktop\\express-server:/usr/src/app/backend"
+    working_dir: /usr/src/app/backend
+    
+      
+  frontend: 
+    command: "npm start"
+    depends_on: 
+      - backend
+    image: "node:latest"
+    links: 
+      - backend
+    ports: 
+      - "8089:3000"
+    tty: true
+    volumes: 
+      - "C:\\Users\\vallurna\\Desktop\\password-store-app:/usr/src/app/frontend"
+    working_dir: /usr/src/app/frontend
+    
+      
+  mongo: 
+    container_name: mongo
+    image: "mongo:latest"
+    ports: 
+      - "27017:27017"
+    
+      
+  mongo-express: 
+    depends_on: 
+      - mongo
+    environment: 
+      - ME_CONFIG_OPTIONS_EDITORTHEME=ambiance
+    image: "mongo-express:latest"
+    ports: 
+      - "8083:8081"
+    
